@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="Discover quality products at Royalty Store. Shop your style, your way.">
+
+  <title>Royalty Store | Shop in Style</title>
+
+  <!-- IMPORTANT: Connects the design file -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#" aria-label="Royalty Store home">
+      ROYALTY<span> STORE</span>
+    </a>
+
+    <button class="cart-button" id="cart-toggle" type="button">
+      Cart <span class="cart-count" id="cart-count">0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">WELCOME TO ROYALTY</p>
+      <h1>Shop like <span>royalty.</span></h1>
+      <p class="hero-description">
+        Discover your next favourite find. Quality, style and value in one place.
+      </p>
+      <a href="#shop" class="primary-button">Explore the store</a>
+    </section>
+
+    <section class="shop-section" id="shop">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">YOUR NEXT FIND</p>
+          <h2>Our collection</h2>
+        </div>
+        <p class="muted" id="product-total">Explore our products</p>
+      </div>
+
+      <label class="search-label" for="product-search">Search products</label>
+      <input
+        type="search"
+        id="product-search"
+        class="search-input"
+        placeholder="Search by product name..."
+        autocomplete="off"
+      >
+
+      <div class="filters" id="category-filters" aria-label="Product categories">
+        <button class="filter-button active" data-category="All" type="button">All</button>
+        <button class="filter-button" data-category="Accessories" type="button">Accessories</button>
+        <button class="filter-button" data-category="Lifestyle" type="button">Lifestyle</button>
+        <button class="filter-button" data-category="Fashion" type="button">Fashion</button>
+      </div>
+
+      <div class="product-grid" id="product-grid">
+        <p>Loading products...</p>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <div>
+        <span class="benefit-icon">✦</span>
+        <h3>Carefully selected</h3>
+        <p>Explore products chosen for everyday life.</p>
+      </div>
+      <div>
+        <span class="benefit-icon">♧</span>
+        <h3>Simple shopping</h3>
+        <p>Browse, search and add items to your cart.</p>
+      </div>
+      <div>
+        <span class="benefit-icon">♡</span>
+        <h3>Made for you</h3>
+        <p>A shopping experience designed with care.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="logo footer-logo" href="#">ROYALTY<span> STORE</span></a>
+    <p>Discover something special.</p>
+    <p class="copyright">© <span id="current-year"></span> Royalty Store. All rights reserved.</p>
+  </footer>
+
+  <!-- Shopping cart panel -->
+  <div class="cart-overlay" id="cart-overlay" hidden>
+    <section class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+      <div class="cart-heading">
+        <h2 id="cart-title">Your cart</h2>
+        <button class="close-button" id="cart-close" type="button" aria-label="Close cart">×</button>
+      </div>
+
+      <div id="cart-items" class="cart-items"></div>
+
+      <div class="cart-summary">
+        <p>Subtotal <strong id="cart-subtotal">R0.00</strong></p>
+        <p class="muted small">Delivery costs, if applicable, are not included.</p>
+        <button class="primary-button checkout-button" id="checkout-button" type="button">
+          Continue to checkout
+        </button>
+        <p class="muted small">Checkout is a demonstration. No payment will be taken.</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- IMPORTANT: Connects the functionality file -->
+  <script src="script.js"></script>
+</body>
+</html>
