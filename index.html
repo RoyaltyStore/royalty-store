@@ -4,113 +4,156 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#111111">
-  <meta name="description" content="Discover quality products at Royalty Store. Shop your style, your way.">
-
-  <title>Royalty Store | Shop in Style</title>
-
-  <!-- IMPORTANT: Connects the design file -->
+  <meta name="description" content="Discover great finds across electronics, home, fashion, automotive and lifestyle at Royalty Store.">
+  <title>Royalty Store | Discover Your Next Favourite</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
+
 <body>
+  <div class="announcement">
+    ROYALTY STORE <span>•</span> GREAT FINDS, ONE PLACE
+  </div>
+
   <header class="site-header">
-    <a class="logo" href="#" aria-label="Royalty Store home">
-      ROYALTY<span> STORE</span>
+    <a class="brand" href="#" aria-label="Royalty Store home">
+      <span class="brand-crown">♛</span>
+      <span class="brand-name">ROYALTY <b>STORE</b></span>
     </a>
 
-    <button class="cart-button" id="cart-toggle" type="button">
-      Cart <span class="cart-count" id="cart-count">0</span>
-    </button>
+    <div class="header-actions">
+      <button class="icon-button" id="search-toggle"
+        aria-label="Focus product search">⌕</button>
+      <button class="cart-button" id="open-cart">
+        Bag <span class="cart-count" id="cart-count">0</span>
+      </button>
+    </div>
   </header>
 
   <main>
     <section class="hero">
-      <p class="eyebrow">WELCOME TO ROYALTY</p>
-      <h1>Shop like <span>royalty.</span></h1>
-      <p class="hero-description">
-        Discover your next favourite find. Quality, style and value in one place.
-      </p>
-      <a href="#shop" class="primary-button">Explore the store</a>
+      <div class="hero-content">
+        <p class="eyebrow">WELCOME TO ROYALTY STORE</p>
+        <h1>Good finds.<br><span>Better choices.</span></h1>
+        <p class="hero-copy">
+          Discover products for your everyday life, all in one place.
+        </p>
+        <a class="gold-button" href="#shop">Explore the store <span>→</span></a>
+      </div>
+      <div class="hero-mark" aria-hidden="true">
+        <span>♛</span>
+        <p>YOUR STYLE.<br>YOUR EVERYDAY.</p>
+      </div>
+    </section>
+
+    <section class="benefit-strip" aria-label="Store highlights">
+      <div><span>✦</span> Carefully selected finds</div>
+      <div><span>◇</span> Clear pricing</div>
+      <div><span>♧</span> Personal service</div>
     </section>
 
     <section class="shop-section" id="shop">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">YOUR NEXT FIND</p>
-          <h2>Our collection</h2>
+          <p class="eyebrow">THE COLLECTION</p>
+          <h2>Find your next favourite</h2>
+          <p class="muted">Explore our departments and discover something useful.</p>
         </div>
-        <p class="muted" id="product-total">Explore our products</p>
       </div>
 
-      <label class="search-label" for="product-search">Search products</label>
-      <input
-        type="search"
-        id="product-search"
-        class="search-input"
-        placeholder="Search by product name..."
-        autocomplete="off"
-      >
+      <label class="search-box">
+        <span aria-hidden="true">⌕</span>
+        <input id="product-search" type="search"
+          placeholder="Search products..."
+          aria-label="Search products">
+        <button id="clear-search" type="button" hidden>Clear</button>
+      </label>
 
-      <div class="filters" id="category-filters" aria-label="Product categories">
-        <button class="filter-button active" data-category="All" type="button">All</button>
-        <button class="filter-button" data-category="Accessories" type="button">Accessories</button>
-        <button class="filter-button" data-category="Lifestyle" type="button">Lifestyle</button>
-        <button class="filter-button" data-category="Fashion" type="button">Fashion</button>
+      <div class="category-list" id="category-list"
+        aria-label="Filter products by category"></div>
+
+      <div class="catalogue-toolbar">
+        <p id="product-count">Browse our collection</p>
+        <label class="sort-label">
+          Sort:
+          <select id="sort-products" aria-label="Sort products">
+            <option value="featured">Featured</option>
+            <option value="price-low">Price: low to high</option>
+            <option value="price-high">Price: high to low</option>
+            <option value="name">Name: A to Z</option>
+            <option value="discount">Biggest saving</option>
+          </select>
+        </label>
       </div>
 
-      <div class="product-grid" id="product-grid">
-        <p>Loading products...</p>
+      <div class="product-grid" id="product-grid"></div>
+
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">♛</div>
+        <h3 id="empty-title">Your next great find is on its way.</h3>
+        <p id="empty-message">
+          We're preparing our catalogue. Check back as verified products are added.
+        </p>
+        <button class="outline-button" id="reset-filters" type="button">
+          Browse all departments
+        </button>
       </div>
     </section>
 
-    <section class="benefits">
-      <div>
-        <span class="benefit-icon">✦</span>
-        <h3>Carefully selected</h3>
-        <p>Explore products chosen for everyday life.</p>
-      </div>
-      <div>
-        <span class="benefit-icon">♧</span>
-        <h3>Simple shopping</h3>
-        <p>Browse, search and add items to your cart.</p>
-      </div>
-      <div>
-        <span class="benefit-icon">♡</span>
-        <h3>Made for you</h3>
-        <p>A shopping experience designed with care.</p>
-      </div>
+    <section class="brand-banner">
+      <p class="eyebrow">THE ROYALTY STANDARD</p>
+      <h2>A little something for everyone.</h2>
+      <p>Explore useful finds across the things you love, need and enjoy.</p>
+      <a href="#shop" class="text-link">Explore departments →</a>
     </section>
   </main>
 
   <footer class="site-footer">
-    <a class="logo footer-logo" href="#">ROYALTY<span> STORE</span></a>
-    <p>Discover something special.</p>
-    <p class="copyright">© <span id="current-year"></span> Royalty Store. All rights reserved.</p>
+    <a class="brand footer-brand" href="#">
+      <span class="brand-crown">♛</span>
+      <span class="brand-name">ROYALTY <b>STORE</b></span>
+    </a>
+    <p>Great finds. Better choices.</p>
+    <p class="footer-small">© <span id="current-year"></span> Royalty Store. All rights reserved.</p>
+    <p class="footer-small">Delivery, returns and contact information will be published before launch.</p>
   </footer>
 
-  <!-- Shopping cart panel -->
-  <div class="cart-overlay" id="cart-overlay" hidden>
-    <section class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+  <div class="overlay" id="cart-overlay" hidden>
+    <aside class="cart-panel" role="dialog" aria-modal="true"
+      aria-labelledby="cart-title">
       <div class="cart-heading">
-        <h2 id="cart-title">Your cart</h2>
-        <button class="close-button" id="cart-close" type="button" aria-label="Close cart">×</button>
+        <div>
+          <p class="eyebrow">YOUR SELECTION</p>
+          <h2 id="cart-title">Shopping bag</h2>
+        </div>
+        <button class="close-button" id="close-cart" aria-label="Close shopping bag">×</button>
       </div>
 
-      <div id="cart-items" class="cart-items"></div>
+      <div class="cart-items" id="cart-items"></div>
 
-      <div class="cart-summary">
-        <p>Subtotal <strong id="cart-subtotal">R0.00</strong></p>
-        <p class="muted small">Delivery costs, if applicable, are not included.</p>
-        <button class="primary-button checkout-button" id="checkout-button" type="button">
+      <div class="cart-empty" id="cart-empty">
+        <p>Your shopping bag is empty.</p>
+        <button class="outline-button" id="continue-shopping" type="button">
+          Continue browsing
+        </button>
+      </div>
+
+      <div class="cart-summary" id="cart-summary" hidden>
+        <div class="summary-row">
+          <span>Product subtotal</span>
+          <strong id="cart-subtotal">R0.00</strong>
+        </div>
+        <p class="muted small">Delivery is calculated separately. Prices and availability must be confirmed before an order is accepted.</p>
+        <button class="gold-button full-width" id="checkout-button" type="button">
           Continue to checkout
         </button>
-        <p class="muted small">Checkout is a demonstration. No payment will be taken.</p>
+        <p class="demo-notice" id="checkout-notice">
+          Online checkout is not active yet. No payment will be taken.
+        </p>
       </div>
-    </section>
+    </aside>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <!-- IMPORTANT: Connects the functionality file -->
-  <script src="script.js"></script>
 </body>
 </html>
