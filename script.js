@@ -3,34 +3,24 @@
 /*
   ROYALTY STORE CATALOGUE
 
-  Only add products after verifying the real product, price,
-  comparison price, image and availability.
-
   IMPORTANT:
-  Never put supplier URLs, supplier costs or profit margins here.
-  This JavaScript is public and visitors can inspect it.
+  Supplier links, buying costs and profit margins must never
+  be placed in this public JavaScript file.
 */
 
 const products = [
-  /*
-  ADD VERIFIED PRODUCTS HERE USING THIS FORMAT:
-
   {
-    id: "rs-001",
-    name: "Verified product name",
+    id: "rs-thrustmaster-t98-ferrari-296-gtb-xbox",
+    name: "Thrustmaster T98 Ferrari 296 GTB Xbox",
     category: "Electronics",
-    description: "An accurate description of the product.",
-    price: 399.00,
-    compareAt: 499.00,
-    image: "https://example.com/authorised-product-image.jpg",
+    description:
+      "Ferrari-inspired racing wheel and pedal set for compatible Xbox consoles and Windows PC. Please confirm compatibility with your setup before ordering.",
+    price: 2000.00,
+    compareAt: 2000.00,
+    image: "https://pin.it/6L2JMDzJO",
     featured: true,
     verified: true
-  },
-
-  The example above is a TEMPLATE, not a real product listing.
-  Replace all example details with verified information.
-  Do not remove the comma between product objects when adding more.
-  */
+  }
 ];
 
 const categories = [
@@ -82,17 +72,22 @@ let toastTimer;
 document.getElementById("current-year").textContent =
   new Date().getFullYear();
 
-/* Basic safety checks for public product data. */
+/* Validate public product data. */
 function getVerifiedProducts() {
   return products.filter(product => {
     return product.verified === true
-      && product.id
-      && product.name
+      && typeof product.id === "string"
+      && typeof product.name === "string"
       && categories.includes(product.category)
       && Number.isFinite(product.price)
       && product.price > 0
-      && Number.isFinite(product.compareAt)
-      && product.compareAt >= product.price
+      && (
+        product.compareAt == null
+        || (
+          Number.isFinite(product.compareAt)
+          && product.compareAt >= product.price
+        )
+      )
       && typeof product.description === "string"
       && typeof product.image === "string"
       && /^https:\/\//i.test(product.image);
@@ -115,7 +110,10 @@ function formatMoney(value) {
 
 function loadCart() {
   try {
-    const saved = JSON.parse(localStorage.getItem("royaltyStoreCart") || "[]");
+    const saved = JSON.parse(
+      localStorage.getItem("royaltyStoreCart") || "[]"
+    );
+
     return Array.isArray(saved)
       ? saved.filter(item =>
           item
@@ -131,7 +129,10 @@ function loadCart() {
 
 function saveCart() {
   try {
-    localStorage.setItem("royaltyStoreCart", JSON.stringify(cart));
+    localStorage.setItem(
+      "royaltyStoreCart",
+      JSON.stringify(cart)
+    );
   } catch {
     showToast("Your browser could not save the shopping bag.");
   }
@@ -142,6 +143,7 @@ function showToast(message) {
   elements.toast.hidden = false;
 
   clearTimeout(toastTimer);
+
   toastTimer = setTimeout(() => {
     elements.toast.hidden = true;
   }, 2600);
@@ -151,7 +153,9 @@ function showToast(message) {
 function renderCategories() {
   elements.categoryList.innerHTML = categories.map(category => `
     <button
-      class="category-button ${category === selectedCategory ? "active" : ""}"
+      class="category-button ${
+        category === selectedCategory ? "active" : ""
+      }"
       type="button"
       data-category="${escapeHTML(category)}"
       aria-pressed="${category === selectedCategory}">
@@ -191,16 +195,19 @@ function getVisibleProducts() {
       break;
 
     case "discount":
-      visible.sort((a, b) => {
-        const savingA = a.compareAt - a.price;
-        const savingB = b.compareAt - b.price;
-        return savingB - savingA;
-      });
+      visible.sort(
+        (a, b) =>
+          ((b.compareAt ?? b.price) - b.price)
+          - ((a.compareAt ?? a.price) - a.price)
+      );
       break;
 
     default:
-      visible.sort((a, b) => Number(b.featured === true)
-        - Number(a.featured === true));
+      visible.sort(
+        (a, b) =>
+          Number(b.featured === true)
+          - Number(a.featured === true)
+      );
   }
 
   return visible;
@@ -212,7 +219,9 @@ function renderProducts() {
   const allProducts = getVerifiedProducts();
 
   elements.productCount.textContent =
-    `${visible.length} ${visible.length === 1 ? "product" : "products"}`;
+    `${visible.length} ${
+      visible.length === 1 ? "product" : "products"
+    }`;
 
   elements.clearSearch.hidden = !elements.search.value;
 
@@ -225,7 +234,7 @@ function renderProducts() {
         "Your next great find is on its way.";
 
       elements.emptyMessage.textContent =
-        "We're preparing our catalogue. Verified products will appear here once their details and prices have been checked.";
+        "We're preparing our catalogue. Products will appear here once their details have been checked.";
     } else {
       elements.emptyTitle.textContent = "No products found.";
 
@@ -239,39 +248,66 @@ function renderProducts() {
   elements.emptyState.hidden = true;
 
   elements.productGrid.innerHTML = visible.map(product => {
-    const saving = product.compareAt - product.price;
+    const compareAt = product.compareAt ?? product.price;
+    const saving = compareAt - product.price;
     const hasSaving = saving > 0;
 
     return `
       <article class="product-card">
         <div class="product-image-wrap">
-          ${hasSaving ? '<span class="sale-label">SPECIAL</span>' : ""}
+          ${
+            hasSaving
+              ? '<span class="sale-label">SPECIAL</span>'
+              : ""
+          }
+
           <img
             class="product-image"
             src="${escapeHTML(product.image)}"
             alt="${escapeHTML(product.name)}"
             loading="lazy"
             onerror="this.style.display='none'; this.nextElementSibling.hidden=false;">
-          <div class="product-image-placeholder" hidden aria-hidden="true">♛</div>
+
+          <div
+            class="product-image-placeholder"
+            hidden
+            aria-hidden="true">♛</div>
         </div>
 
         <div class="product-info">
-          <p class="product-category">${escapeHTML(product.category)}</p>
-          <h3 class="product-name">${escapeHTML(product.name)}</h3>
-          <p class="product-description">${escapeHTML(product.description)}</p>
+          <p class="product-category">
+            ${escapeHTML(product.category)}
+          </p>
+
+          <h3 class="product-name">
+            ${escapeHTML(product.name)}
+          </h3>
+
+          <p class="product-description">
+            ${escapeHTML(product.description)}
+          </p>
 
           <div class="product-prices">
-            <span class="product-price">${formatMoney(product.price)}</span>
-            ${hasSaving
-              ? `<span class="old-price">${formatMoney(product.compareAt)}</span>`
-              : ""}
+            <span class="product-price">
+              ${formatMoney(product.price)}
+            </span>
+
+            ${
+              hasSaving
+                ? `<span class="old-price">${formatMoney(compareAt)}</span>`
+                : ""
+            }
           </div>
 
-          ${hasSaving
-            ? `<p class="saving-label">Save ${formatMoney(saving)}</p>`
-            : ""}
+          ${
+            hasSaving
+              ? `<p class="saving-label">Save ${formatMoney(saving)}</p>`
+              : ""
+          }
 
-          <button class="add-button" type="button"
+          <button
+            class="add-button"
+            type="button"
             data-add="${escapeHTML(product.id)}">
             Add to bag
           </button>
@@ -287,7 +323,10 @@ function getCartProducts() {
 
   return cart.map(item => {
     const product = verifiedProducts.find(p => p.id === item.id);
-    return product ? { ...product, quantity: item.quantity } : null;
+
+    return product
+      ? { ...product, quantity: item.quantity }
+      : null;
   }).filter(Boolean);
 }
 
@@ -334,9 +373,15 @@ function removeFromCart(id) {
 
 function renderCart() {
   const items = getCartProducts();
-  const quantity = items.reduce((total, item) => total + item.quantity, 0);
+
+  const quantity = items.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
   const subtotal = items.reduce(
-    (total, item) => total + item.price * item.quantity, 0
+    (total, item) => total + item.price * item.quantity,
+    0
   );
 
   elements.cartCount.textContent = quantity;
@@ -353,8 +398,10 @@ function renderCart() {
   elements.cartItems.innerHTML = items.map(item => `
     <div class="cart-line">
       <div class="cart-thumb">
-        <img src="${escapeHTML(item.image)}"
-          alt="" onerror="this.style.display='none';">
+        <img
+          src="${escapeHTML(item.image)}"
+          alt=""
+          onerror="this.style.display='none';">
       </div>
 
       <div>
@@ -362,16 +409,28 @@ function renderCart() {
         <p>${formatMoney(item.price)}</p>
 
         <div class="quantity-controls">
-          <button type="button" data-quantity="${escapeHTML(item.id)}"
-            data-change="-1" aria-label="Decrease quantity">−</button>
+          <button
+            type="button"
+            data-quantity="${escapeHTML(item.id)}"
+            data-change="-1"
+            aria-label="Decrease quantity">−</button>
+
           <span>${item.quantity}</span>
-          <button type="button" data-quantity="${escapeHTML(item.id)}"
-            data-change="1" aria-label="Increase quantity">+</button>
+
+          <button
+            type="button"
+            data-quantity="${escapeHTML(item.id)}"
+            data-change="1"
+            aria-label="Increase quantity">+</button>
         </div>
       </div>
 
-      <button class="remove-item" type="button"
-        data-remove="${escapeHTML(item.id)}">Remove</button>
+      <button
+        class="remove-item"
+        type="button"
+        data-remove="${escapeHTML(item.id)}">
+        Remove
+      </button>
     </div>
   `).join("");
 
@@ -413,7 +472,10 @@ elements.sort.addEventListener("change", renderProducts);
 
 elements.searchToggle.addEventListener("click", () => {
   elements.search.focus();
-  document.getElementById("shop").scrollIntoView({ behavior: "smooth" });
+
+  document.getElementById("shop").scrollIntoView({
+    behavior: "smooth"
+  });
 });
 
 elements.clearSearch.addEventListener("click", () => {
@@ -435,6 +497,7 @@ elements.resetFilters.addEventListener("click", () => {
   selectedCategory = "All";
   elements.search.value = "";
   elements.sort.value = "featured";
+
   renderCategories();
   renderProducts();
 });
@@ -462,7 +525,10 @@ elements.cartItems.addEventListener("click", event => {
   }
 });
 
-/* Checkout is deliberately disabled until a real order system is connected. */
+/*
+  Checkout is still a demo.
+  No real order or payment is processed.
+*/
 elements.checkout.addEventListener("click", () => {
   elements.checkoutNotice.textContent =
     "Checkout is not live yet. No order or payment has been submitted.";
